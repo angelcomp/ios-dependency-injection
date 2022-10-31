@@ -24,13 +24,15 @@ public class CoursesViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    var courses: [Course] = []
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = .systemBackground
         
-        dataFetchable.fetchCoursesNames { courses in
-            print(courses)
+        dataFetchable.fetchCoursesNames { [weak self] names in
+            self?.courses = names.map { Course(name: $0) }
         }
     }
 }

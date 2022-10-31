@@ -23,8 +23,12 @@ public class APICaller {
             }
             
             do {
-                let result = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed)
-                print(result)
+                guard let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.fragmentsAllowed) as? [[String:String]] else {
+                    completion([])
+                    return
+                }
+                let names = json.compactMap({ $0["name"] })
+                completion(names)
             } catch {
                 completion([])
             }
